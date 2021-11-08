@@ -4,7 +4,6 @@ import BookShelfChanger from "./BookShelfChanger";
 class BookCard extends Component {
   render() {
     const { book, onUpdateShelf } = this.props;
-    console.log(book);
     return (
       <li>
         <div className="book">
@@ -14,9 +13,8 @@ class BookCard extends Component {
               style={{
                 width: 128,
                 height: 193,
-                backgroundImage: `url(${
-                  book.imageLinks && book.imageLinks.thumbnail
-                })`,
+                backgroundImage: `url(${book.imageLinks &&
+                  book.imageLinks.thumbnail})`,
               }}
             />
             <BookShelfChanger onUpdateShelf={onUpdateShelf} book={book} />

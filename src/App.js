@@ -1,6 +1,11 @@
 import React from "react";
 import "./App.css";
-import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  Switch,
+  BrowserRouter as Router,
+} from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 import SearchPage from "./components/SearchPage";
 import HomePage from "./components/HomePage";
@@ -22,51 +27,60 @@ class App extends React.Component {
     });
   }
 
-  updateShelf = (book, shelf) => {
+  UpdateShelf = (book, shelf) => {
     this.updateBookShelf(book, shelf);
-    BooksAPI.update(book, shelf);
+    BooksAPI.update(book, shelf).then((books) => {
+      book.shelf === "none" &&
+        shelf !== "none" &&
+        this.setState((curState) => ({ books: curState.books.concat(book) }));
+      console.log("book has been updated");
+    });
   };
 
   updateBookShelf(book, shelf) {
     let books = this.state.books;
-    books.forEach((curBook) => {
-      if (curBook.id === book.id) {
-        curBook.shelf = shelf;
-      }
-    });
+    books.map((curBook) =>
+      curBook.id === book.id ? (curBook.shelf = shelf) : curBook
+    );
     this.setState({ books: books });
+    shelf === "none" &&
+      this.setState((curState) => {
+        const newBook = curState.books.filter(
+          (deletedBook) => deletedBook.id !== book.id
+        );
+        return { books: newBook };
+      });
   }
 
   render() {
     const { books } = this.state;
-    console.log("App page");
-    console.log({ books });
+    console.log("App page", books);
     return (
       <Router>
         <div className="app">
-          <Routes>
-            <Route
-              exact
-              path="/"
-              element={() => (
-                <HomePage
-                  books={books}
-                  shelves={this.shelves}
-                  onUpdateShelf={this.updateShelf}
-                />
-              )}
-            />
+          <Switch>
             <Route
               path="/search"
-              element={() => (
+              component={() => (
                 <SearchPage
                   books={books}
                   shelves={this.shelves}
-                  onUpdateShelf={this.updateShelf}
+                  onUpdateShelf={this.UpdateShelf}
                 />
               )}
             />
-          </Routes>
+            <Route
+              exact
+              path="/"
+              component={() => (
+                <HomePage
+                  books={books}
+                  shelves={this.shelves}
+                  onUpdateShelf={this.UpdateShelf}
+                />
+              )}
+            />
+          </Switch>
         </div>
       </Router>
     );

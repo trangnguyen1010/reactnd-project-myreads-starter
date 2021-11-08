@@ -2,11 +2,11 @@ import React, { Component } from "react";
 
 class BookShelfChanger extends Component {
   state = {
-    shelf: this.props.book.shelf,
+    value: this.props.book.shelf,
   };
 
   handleChange = (event) => {
-    this.setState({ shelf: event.target.value });
+    this.setState({ value: event.target.value });
     this.props.onUpdateShelf(this.props.book, event.target.value);
   };
   render() {

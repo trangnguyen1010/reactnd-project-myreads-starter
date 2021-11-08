@@ -12,10 +12,10 @@ class SearchPage extends Component {
   handleChange = (event) => {
     const query = event.target.value;
     this.setState({ textSearch: query });
-    console.log(this.state.textSearch);
+
     query.length > 0
       ? BooksAPI.search(query).then((books) => {
-          console.log(books);
+          console.log("books", books);
           books.error
             ? this.setState({ searchResults: [] })
             : this.setState({ searchResults: books });
@@ -25,20 +25,17 @@ class SearchPage extends Component {
   resetSearch = () => {
     this.setState({ searchResults: [] });
   };
+
   render() {
     const { books, onUpdateShelf } = this.props;
-    console.log(this.state.searchResults);
-    console.log(books);
-    this.state.searchResults.forEach(function (searchedBook) {
-      books.map((book) => {
-        if (book.id === searchedBook.id) {
-          return (searchedBook.shelf = book.shelf);
-        }
-      });
-      if (!searchedBook.shelf) {
-        return (searchedBook.shelf = "none");
-      }
+    console.log("search results", this.state.searchResults);
+    this.state.searchResults.forEach(function(searchedBook) {
+      books.forEach((book) =>
+        book.id === searchedBook.id ? (searchedBook.shelf = book.shelf) : ""
+      );
+      return !searchedBook.shelf ? (searchedBook.shelf = "none") : "";
     });
+    console.log("searchpage: ", this.state.searchResults);
     return (
       <div className="search-books">
         <div className="search-books-bar">
