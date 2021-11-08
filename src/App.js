@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import { Route, BrowserRouter as Router } from "react-router-dom";
+import { Route, Routes, BrowserRouter as Router } from "react-router-dom";
 import * as BooksAPI from "./BooksAPI";
 import SearchPage from "./components/SearchPage";
 import HomePage from "./components/HomePage";
@@ -39,31 +39,34 @@ class App extends React.Component {
 
   render() {
     const { books } = this.state;
+    console.log("App page");
     console.log({ books });
     return (
       <Router>
         <div className="app">
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <SearchPage
-                books={books}
-                shelves={this.shelves}
-                onUpdateShelf={this.updateShelf}
-              />
-            )}
-          />
-          <Route
-            path="/search"
-            render={() => (
-              <HomePage
-                books={books}
-                shelves={this.shelves}
-                onUpdateShelf={this.updateShelf}
-              />
-            )}
-          />
+          <Routes>
+            <Route
+              exact
+              path="/"
+              element={() => (
+                <HomePage
+                  books={books}
+                  shelves={this.shelves}
+                  onUpdateShelf={this.updateShelf}
+                />
+              )}
+            />
+            <Route
+              path="/search"
+              element={() => (
+                <SearchPage
+                  books={books}
+                  shelves={this.shelves}
+                  onUpdateShelf={this.updateShelf}
+                />
+              )}
+            />
+          </Routes>
         </div>
       </Router>
     );

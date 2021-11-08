@@ -10,14 +10,17 @@ class SearchPage extends Component {
   };
 
   handleChange = (event) => {
-    this.setState({ textSearch: event.target.value });
+    const query = event.target.value;
+    this.setState({ textSearch: query });
     console.log(this.state.textSearch);
-    BooksAPI.search(event.target.value).then((books) => {
-      console.log(books);
-      books.error
-        ? this.setState({ searchResults: [] })
-        : this.setState({ searchResults: books });
-    });
+    query.length > 0
+      ? BooksAPI.search(query).then((books) => {
+          console.log(books);
+          books.error
+            ? this.setState({ searchResults: [] })
+            : this.setState({ searchResults: books });
+        })
+      : this.setState({ searchResults: [] });
   };
   resetSearch = () => {
     this.setState({ searchResults: [] });
@@ -26,14 +29,14 @@ class SearchPage extends Component {
     const { books, onUpdateShelf } = this.props;
     console.log(this.state.searchResults);
     console.log(books);
-    this.state.searchResults.forEach(function(searchedBook) {
+    this.state.searchResults.forEach(function (searchedBook) {
       books.map((book) => {
         if (book.id === searchedBook.id) {
-          searchedBook.shelf = book.shelf;
+          return (searchedBook.shelf = book.shelf);
         }
       });
       if (!searchedBook.shelf) {
-        searchedBook.shelf = "none";
+        return (searchedBook.shelf = "none");
       }
     });
     return (

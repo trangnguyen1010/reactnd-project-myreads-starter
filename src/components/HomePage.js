@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 class HomePage extends Component {
   render() {
     const { books, shelves, onUpdateShelf } = this.props;
+    console.log("this is home page");
     function filterBook(shelf) {
       return books.filter((book) => book.shelf === shelf.key);
     }
