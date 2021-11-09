@@ -39,11 +39,9 @@ class SearchPage extends Component {
     return (
       <div className="search-books">
         <div className="search-books-bar">
-          <Link to="/">
-            <button className="close-search" onClick={this.resetSearch}>
-              Close
-            </button>
-          </Link>
+          <button className="close-search" onClick={this.resetSearch}>
+            Close
+          </button>
           <div className="search-books-input-wrapper">
             <input
               type="text"

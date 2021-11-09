@@ -61,7 +61,7 @@ class App extends React.Component {
           <Switch>
             <Route
               path="/search"
-              component={() => (
+              render={() => (
                 <SearchPage
                   books={books}
                   shelves={this.shelves}
@@ -72,7 +72,7 @@ class App extends React.Component {
             <Route
               exact
               path="/"
-              component={() => (
+              render={() => (
                 <HomePage
                   books={books}
                   shelves={this.shelves}
